@@ -1,0 +1,28 @@
+#include "mbed.h"
+
+DigitalIn fire(p14); 
+PwmOut spkr(p26); 
+AnalogIn pot1(p19);
+
+int main() {                                                        // Creating Varialbles  
+
+    float freq_start = 2000.0;                                      //  initialization parameters at start
+    float freq_end = 10000.0;
+    float freq_step = 100.0;
+    
+    while (1) {
+        
+        for (float i = freq_start; i < freq_end; i += freq_step) {   // Play sound with increasing frequency
+            spkr.period(1.0 / i);
+            spkr = 0.5;
+            wait(0.1);
+        } 
+        
+            spkr = 0.0;                                              // Turn off speaker and wait for potentiometer input
+        while (pot1.read() < 0.5) {}                                 // Modify initialization parameters for next loop iteration
+        
+        freq_start = 1000.0;
+        freq_end = 5000.0;
+        freq_step = 50.0;
+    }
+}
